@@ -51,3 +51,15 @@ when "freebsd"
   default['ntp']['conf_group'] = "wheel"
   default['ntp']['var_group'] = "wheel" 
 end
+when "windows"
+  default['ntp']['service_user'] = "ntp"
+  default['ntp']['service_password'] = random_password(12)
+end
+
+##################
+# helper methods
+##################
+CHARS = ('0'..'9').to_a + ('A'..'Z').to_a + ('a'..'z').to_a
+def random_password(length=10)
+   CHARS.sort_by { rand }.join[0...length]
+end

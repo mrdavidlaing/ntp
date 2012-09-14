@@ -3,12 +3,14 @@ maintainer_email  "cookbooks@opscode.com"
 license           "Apache 2.0"
 description       "Installs and configures ntp as a client or server"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "1.1.9"
+version           "1.2.0"
 recipe "ntp", "Installs and configures ntp either as a server or client"
 
-%w{ ubuntu debian redhat centos fedora scientific amazon oracle freebsd }.each do |os|
+%w{ ubuntu debian redhat centos fedora scientific amazon oracle freebsd windows}.each do |os|
   supports os
 end
+
+depends "windows"
 
 attribute "ntp",
   :display_name => "NTP",
