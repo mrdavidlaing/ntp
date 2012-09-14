@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-raise ArgumentError, 'This recipe can only be run on Windows nodes' unless platform? "windows"
+unless platform? "windows"
+  raise ArgumentError, 'This recipe can only be run on Windows nodes' 
+end
 
 service_user = node["ntp"]["service_user"]
 service_password = node["ntp"]["service_password"] 
@@ -54,7 +56,7 @@ windows_batch "IFF on EC2, break the dependancy of Ec2Config on W32Time, so that
   code <<-EOH
   sc config Ec2Config depend= /
   EOH
-  if { node.attribute?('ec2') }
+  only_if { node.attribute?('ec2') }
 end
 
 windows_package "Network Time Protocol" do
@@ -67,7 +69,7 @@ windows_batch "IFF on EC2, set Ec2Config to depend NTP instead of W32Time" do
   code <<-EOH
   sc config Ec2Config depend= NTP
   EOH
-  if { node.attribute?('ec2') }
+  only_if { node.attribute?('ec2') }
 end
 
 windows_package "NTP Time Server Monitor 1.04" do
@@ -81,9 +83,3 @@ windows_zipfile "#{ntp_install_dir}\\bin" do
   action :unzip
   not_if {::File.exists?("#{ntp_install_dir}\\bin\\NTPplotter.exe")}
 end
-
-
-
-
-
-

@@ -50,7 +50,6 @@ when "freebsd"
   default['ntp']['packages'] = %w{ ntp }
   default['ntp']['conf_group'] = "wheel"
   default['ntp']['var_group'] = "wheel" 
-end
 when "windows"
   default['ntp']['service_user'] = "ntp"
   default['ntp']['service_password'] = random_password(12)
