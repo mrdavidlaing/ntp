@@ -22,10 +22,18 @@ end
 service_user = node["ntp"]["service_user"]
 service_password = node["ntp"]["service_password"] 
 
-ntp_install_settings = "#{ENV['TEMP']}\\ntpd_installer_settings.ini"
-ntp_install_dir = "#{ENV['ProgramFiles']}\\NTP"
+ntp_install_dir = "C:\\NTP"
+ntp_install_settings = "#{ntp_install_dir}\\ntpd_installer_settings.ini"
 ntp_config_dir  = "#{ntp_install_dir}\\etc"
 ntp_config_file = "#{ntp_config_dir}\\ntp.conf"
+
+directory "#{ntp_install_dir}" do
+  action :create
+end
+
+directory "#{ntp_config_dir}" do
+  action :create
+end
 
 template "#{ntp_install_settings}" do
   source "ntpd_installer_settings.ini.erb"
@@ -35,14 +43,6 @@ template "#{ntp_install_settings}" do
     :service_user => service_user,
     :service_password => service_password
   )
-end
-
-directory "#{ntp_install_dir}" do
-  action :create
-end
-
-directory "#{ntp_config_dir}" do
-  action :create
 end
 
 template "#{ntp_config_file}" do
